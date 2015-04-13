@@ -1,3 +1,4 @@
 module Main where
+import Meisel
 
-main = putStrLn "Hello, World!"
+main = print (startposition 1 2)
