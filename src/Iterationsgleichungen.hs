@@ -7,10 +7,9 @@ f' x y = 10 - 500 * y + 500 * x
 
 euler h x_end = y_next 1 h 0 x_end []
 
--- rekursionsanker: t_n == x_end (müste egtl noch 1 schritt weitergehen)
 y_next:: Double -> Double -> Double -> Double -> [Double] -> [Double]
 y_next y h t_n x_end ys
-    | t_n == x_end = ys
-    | otherwise = y_next f'_curr h t_next x_end (f'_curr:ys)
-        where t_next = t_n+h
+    | t_n == x_end = ys -- rekursionsanker
+    | otherwise    = y_next f'_curr h t_next x_end (f'_curr:ys)
+        where t_next  = t_n+h
               f'_curr = y+h * (f' t_n y)
