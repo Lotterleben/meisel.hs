@@ -8,6 +8,9 @@ f' x y = 10 - 500 * y + 500 * x
 --------------------------------------------------------------------------------
 --- foobar h x_end = zipWith [0..] (euler h x_end)
 
+euler_with_index :: Double -> Double -> [(Double, Double)]
+euler_with_index h x_end = [(a * h, b) | (a, b) <- xs]
+  where xs = zip [0..] (euler h x_end)
 
 euler h x_end = reverse (y_next_e 1 h 0 x_end [])
 
@@ -18,6 +21,12 @@ y_next_e y h t_n x_end ys
         where t_next  = t_n+h
               f'_curr = y+h * (f' t_n y)
 --------------------------------------------------------------------------------
+
+
+rk2_with_index :: Double -> Double -> [(Double, Double)]
+rk2_with_index h x_end = [(a * h, b) | (a, b) <- xs]
+  where xs = zip [0..] (rk2 h x_end)
+
 
 rk2 h x_end = reverse (y_next_rk 1 h 0 x_end [])
 
