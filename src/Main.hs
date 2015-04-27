@@ -12,8 +12,8 @@ circle = [ (r a * sin (a*dr),r a * cos (a*dr)) | a <- [0,0.5..360::Double] ]
     dr = 2 * pi / 360
     r a = 0.8 * cos (a * 20 * pi /360)
 
-main = toFile def "example7_big.svg" $ do
-    layout_title .= "Parametric Plot"
+main = toFile def "plots/test.svg" $ do
+    layout_title .= ""
     plot (line "euler" [euler_with_index 0.001 0.2])
     plot (line "rk2" [rk2_with_index 0.001 0.2])
     --- plot (line "foobar1" [euler_with_index 0.0001 0.2])
