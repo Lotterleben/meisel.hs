@@ -23,21 +23,20 @@ y_next_e y h t_n x_end ys
 --------------------------------------------------------------------------------
 -- Euler auf (zerlegte) DGLn 2. Ordnung
 
--- h:  step width
--- f: function to apply
+-- h:         step width
+-- f:         function to apply
 -- y1 and y2: start values (TODO: better names)
--- x_end last x val to calculate y for
+-- x_end:     last x val to calculate y for
 -- (concat and finally reverse for performance reasons)
--- TODO: ist t_n.init = y2 richtig?
 euler_2o :: (Ord a, Num a) => a -> (a -> a -> a) -> a -> a -> a -> [a]
 euler_2o h f y1 y2 x_end = reverse(y2_next_e h f y1 y2 0 x_end [])
 
+-- h:     step width
+-- f:     function to apply
 -- y1:    val of previous y1 iteration (initially y(0) = y1)
 -- y2:    val of previous y2 iteration (initially y'(0) = y2)
--- f:     function to apply
--- h:     step width
 -- t_n:   step tracker
--- x_end: last y val to calculate
+-- x_end: last x val to calculate y for
 -- ys:    list of final results
 y2_next_e :: (Ord a, Num a) => a -> (a->a->a) -> a -> a -> a -> a -> [a] -> [a]
 y2_next_e h f y1 y2 t_n x_end ys
