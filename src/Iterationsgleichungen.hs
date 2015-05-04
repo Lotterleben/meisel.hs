@@ -21,31 +21,48 @@ y_next_e y h t_n x_end ys
         where t_next  = t_n+h
               f'_curr = y+h * (f' t_n y)
 --------------------------------------------------------------------------------
+
+-- turn a list of y coordinates into a list of (x,y) coordinates.
+-- h:     step width
+-- ys:    list of y coordinates
+add_x_coordinates:: (Ord a, Num a, Enum a) => a -> [a] -> [(a,a)]
+add_x_coordinates h ys = [(a * h,b) | (a,b) <- (zip [0..] ys)]
+
 -- Euler auf (zerlegte) DGLn 2. Ordnung
 
--- h:  step width
--- f: function to apply
+-- h:         step width
+-- f:         function to apply
 -- y1 and y2: start values (TODO: better names)
--- x_end last x val to calculate y for
+-- x_end:     last x val to calculate y for
+-- returns:   a list of (x,y) coordinates
 -- (concat and finally reverse for performance reasons)
--- TODO: ist t_n.init = y2 richtig?
-euler_2o :: (Ord a, Num a) => a -> (a -> a -> a) -> a -> a -> a -> [a]
-euler_2o h f y1 y2 x_end = reverse(y2_next_e h f y1 y2 y2 x_end [])
+euler_2o :: (Ord a, Num a, Enum a) => a -> (a -> a -> a) -> a -> a -> a -> [(a,a)]
+euler_2o h f y1 y2 x_end = reverse(y2_next_e h f y1 y2 0 x_end [])
 
--- y1: val of previous y1 iteration
--- y2: val of previous y1 iteration
--- f: function to apply (TODO: geht das so?)
--- h:  step width
--- t_n ...
--- x_end last y val to calculate
--- ys list of final results
-y2_next_e :: (Ord a, Num a) => a -> (a->a->a) -> a -> a -> a -> a -> [a] -> [a]
+-- h:     step width
+-- f:     function to apply
+-- y1:    val of previous y1 iteration (initially y(0) = y1)
+-- y2:    val of previous y2 iteration (initially y'(0) = y2)
+-- t_n:   step tracker
+-- x_end: last x val to calculate y for
+-- ys:    list of y coordinate results
+-- returns:   a list of (x,y) coordinates
+y2_next_e :: (Ord a, Num a, Enum a) => a -> (a->a->a) -> a -> a -> a -> a -> [a] -> [(a,a)]
+y2_next_e h f y1 y2 t_n x_end ys
+    | t_n >= x_end =  add_x_coordinates h ys-- rekursionsanker
+    | otherwise    = y2_next_e h f y1_next y2_next t_next x_end (y1:ys)
+        where y1_next = y1 + h * (f t_n y1)
+              y2_next = y2 + h * y1 -- beware, for this is hardly generic (TODO)
+              t_next  = t_n+ h
+
+{-
 y2_next_e h f y1 y2 t_n x_end ys
     | t_n >= x_end = ys -- rekursionsanker
-    | otherwise    = y2_next_e h f y1_next y2_next t_next x_end (y2_next:ys)
+    | otherwise    = y2_next_e h f y1_next y2_next t_next x_end (y2_next_e:ys)
         where t_next  = t_n+h
               y1_next = y1 + h*(f t_n y2)
               y2_next = y2 + h*y1
+-}
 
 --------------------------------------------------------------------------------
 
