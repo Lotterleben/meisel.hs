@@ -59,8 +59,8 @@ main = do
 
   let stepWidth = 0.001
   let foof t_n y2 = -9.81
-  let start = (10.0, reverse(foo_y2_next_e stepWidth 120 0 0 200 []), 0, stepWidth, 0)
-  --let start = (10.0, (euler_2o stepWidth foof 120 0 5), 0, stepWidth, 0)
+  --let start = (10.0, reverse(foo_y2_next_e stepWidth 120 0 0 200 []), 0, stepWidth, 0)
+  let start = (10.0, (euler_2o stepWidth foof 120 0 5), 0, stepWidth, 0)
 
   simulate
     dispWin
