@@ -51,8 +51,8 @@ y2_next_e :: (Ord a, Num a, Enum a) => a -> (a->a->a) -> a -> a -> a -> a -> [a]
 y2_next_e h f y1 y2 t_n x_end ys
     | t_n >= x_end =  add_x_coordinates h ys-- rekursionsanker
     | otherwise    = y2_next_e h f y1_next y2_next t_next x_end (y1:ys)
-        where y1_next = y1 + h * (f t_n y1)
-              y2_next = y2 + h * y1 -- beware, for this is hardly generic (TODO)
+        where y1_next = y1 + h * y2
+              y2_next = y2 + h * (f t_n y2) -- beware, for this is hardly generic (TODO)
               t_next  = t_n+ h
 
 {-
