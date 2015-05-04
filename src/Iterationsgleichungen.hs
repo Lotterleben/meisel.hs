@@ -30,15 +30,15 @@ y_next_e y h t_n x_end ys
 -- (concat and finally reverse for performance reasons)
 -- TODO: ist t_n.init = y2 richtig?
 euler_2o :: (Ord a, Num a) => a -> (a -> a -> a) -> a -> a -> a -> [a]
-euler_2o h f y1 y2 x_end = reverse(y2_next_e h f y1 y2 y2 x_end [])
+euler_2o h f y1 y2 x_end = reverse(y2_next_e h f y1 y2 0 x_end [])
 
--- y1: val of previous y1 iteration
--- y2: val of previous y1 iteration
--- f: function to apply (TODO: geht das so?)
--- h:  step width
--- t_n ...
--- x_end last y val to calculate
--- ys list of final results
+-- y1:    val of previous y1 iteration (initially y(0) = y1)
+-- y2:    val of previous y2 iteration (initially y'(0) = y2)
+-- f:     function to apply
+-- h:     step width
+-- t_n:   step tracker
+-- x_end: last y val to calculate
+-- ys:    list of final results
 y2_next_e :: (Ord a, Num a) => a -> (a->a->a) -> a -> a -> a -> a -> [a] -> [a]
 y2_next_e h f y1 y2 t_n x_end ys
     | t_n >= x_end = ys -- rekursionsanker
