@@ -18,6 +18,33 @@ y_next_e y h t_n x_end ys
         where t_next  = t_n+h
               f'_curr = y+h * (f' t_n y)
 --------------------------------------------------------------------------------
+-- Euler auf (zerlegte) DGLn 2. Ordnung
+
+-- h:  step width
+-- f: function to apply
+-- y1 and y2: start values (TODO: better names)
+-- x_end last x val to calculate y for
+-- (concat and finally reverse for performance reasons)
+-- TODO: ist t_n.init = y2 richtig?
+euler_2o :: (Ord a, Num a) => a -> (a -> a -> a) -> a -> a -> a -> [a]
+euler_2o h f y1 y2 x_end = reverse(y2_next_e h f y1 y2 y2 x_end [])
+
+-- y1: val of previous y1 iteration
+-- y2: val of previous y1 iteration
+-- f: function to apply (TODO: geht das so?)
+-- h:  step width
+-- t_n ...
+-- x_end last y val to calculate
+-- ys list of final results
+y2_next_e :: (Ord a, Num a) => a -> (a->a->a) -> a -> a -> a -> a -> [a] -> [a]
+y2_next_e h f y1 y2 t_n x_end ys
+    | t_n >= x_end = ys -- rekursionsanker
+    | otherwise    = y2_next_e h f y1_next y2_next t_next x_end (y2_next:ys)
+        where t_next  = t_n+h
+              y1_next = y1 + h*(f t_n y2)
+              y2_next = y2 + h*y1
+
+--------------------------------------------------------------------------------
 
 rk2 h x_end = y_next_rk 1 h 0 x_end []
 
