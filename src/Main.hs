@@ -50,11 +50,17 @@ type StepWidth = Double
 type Model = (Size, Trail, Index, StepWidth, Time)
 
 
+-- Let the animation run slower or faster with this time warping device.
+-- 75% off, only this century!
+velocityMultiplier = 5.0
+
 main = do
   let dispWin = InWindow "Onset Test" (1440, 600) (0,0)
 
   let stepWidth = 0.001
+  let foof t_n y2 = -9.81
   let start = (10.0, reverse(foo_y2_next_e stepWidth 120 0 0 200 []), 0, stepWidth, 0)
+  --let start = (10.0, (euler_2o stepWidth foof 120 0 5), 0, stepWidth, 0)
 
   simulate
     dispWin
@@ -81,7 +87,9 @@ drawMoving (x, y) =
 
 step :: ViewPort -> Time -> Model -> Model
 step v t (size, trail, index, stepWidth, time)
-  | t_next > (length trail) = (size, trail, index, stepWidth, time)
-  | otherwise               = (size, trail, t_next, stepWidth, time+t)
-  where t_next = index + floor((t / (double2Float stepWidth)))
+  | index_next >= (length trail) = (size, trail, index, stepWidth, time)
+  | otherwise               = (size, trail, index_next, stepWidth, time_next)
+  where time_next = (time + (t * velocityMultiplier))
+        index_next = floor(time_next / (double2Float stepWidth))
+      --index_next = index + floor((t * (1/(double2Float stepWidth))))
 
